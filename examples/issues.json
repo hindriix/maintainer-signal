@@ -1,0 +1,20 @@
+[
+  {
+    "number": 42,
+    "title": "Regression: auth token refresh crashes on expired session",
+    "url": "https://github.com/example/project/issues/42",
+    "labels": [{"name": "bug"}, {"name": "regression"}],
+    "createdAt": "2025-11-01T12:00:00Z",
+    "updatedAt": "2025-11-03T12:00:00Z",
+    "comments": 14
+  },
+  {
+    "number": 7,
+    "title": "Add dark mode to settings page",
+    "url": "https://github.com/example/project/issues/7",
+    "labels": [{"name": "enhancement"}],
+    "createdAt": "2026-01-01T12:00:00Z",
+    "updatedAt": "2026-01-05T12:00:00Z",
+    "comments": 2
+  }
+]
