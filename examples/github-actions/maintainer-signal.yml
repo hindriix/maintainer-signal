@@ -22,7 +22,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install Maintainer Signal
-        run: python -m pip install maintainer-signal
+        run: python -m pip install git+https://github.com/hindriix/maintainer-signal.git
 
       - name: Generate maintainer report
         env:
