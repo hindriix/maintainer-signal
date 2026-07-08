@@ -4,7 +4,7 @@ import json
 import subprocess
 from pathlib import Path
 
-from maintainer_signal.core import build_signal, render_markdown, score_issue
+from maintainer_signal.core import build_signal, render_agent_failure_review_template, render_markdown, score_issue
 
 
 def make_repo(tmp_path: Path) -> Path:
@@ -62,3 +62,14 @@ def test_render_markdown_has_action_sections(tmp_path: Path) -> None:
     assert "# Maintainer Signal Report" in markdown
     assert "## 4. Next maintainer actions" in markdown
     assert "How to use with Codex" in markdown
+    assert "Agent / CI failure review checklist" in markdown
+
+
+def test_agent_failure_template_focuses_on_github_artifacts() -> None:
+    template = render_agent_failure_review_template("/tmp/example-repo")
+    assert "Pull request description" in template
+    assert "failed GitHub Actions logs" in template
+    assert "Root-cause category" in template
+    assert "Reasoning error" in template
+    assert "Tool misuse" in template
+    assert "Context issue" in template

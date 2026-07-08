@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.9', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install project and test runner
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e . pytest
+      - name: Run tests
+        run: python -m pytest
+      - name: Smoke test CLI markdown output
+        run: python -m maintainer_signal.cli . --issues-json examples/issues.json -o /tmp/maintainer-signal.md
+      - name: Smoke test agent failure template
+        run: python -m maintainer_signal.cli . --format agent-template -o /tmp/agent-failure-review.md

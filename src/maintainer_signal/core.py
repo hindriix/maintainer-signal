@@ -213,6 +213,52 @@ def build_signal(repo: Path, issue_limit: int = 50, issues_json: Optional[Path] 
     )
 
 
+def render_agent_failure_review_template(repo_path: str) -> str:
+    """Return a reusable Markdown checklist for reviewing failed agent runs.
+
+    The template is intentionally GitHub-artifact focused so maintainers can
+    compare expected task intent with PR diffs, workflow logs, commits, and
+    generated artifacts before changing prompts or tools.
+    """
+    return "\n".join([
+        "## Agent / CI failure review checklist",
+        "",
+        f"Repository: `{repo_path}`",
+        "",
+        "Use this when a human or AI agent failed to complete a maintenance task correctly.",
+        "",
+        "### 1. Expected intent",
+        "- What was the task supposed to accomplish?",
+        "- Where was that intent captured: issue, PR, acceptance criteria, or maintainer request?",
+        "",
+        "### 2. Actual result",
+        "- What changed in the PR diff or commits?",
+        "- Which workflow, check, test, or artifact shows the failure?",
+        "",
+        "### 3. Evidence to inspect",
+        "- Pull request description and discussion",
+        "- Changed files and commits",
+        "- Checks tab and failed GitHub Actions logs",
+        "- Uploaded workflow artifacts, reports, screenshots, or test output",
+        "- Related issue requirements and acceptance criteria",
+        "",
+        "### 4. Root-cause category",
+        "- Reasoning error: misread requirements, wrong assumption, ignored acceptance criteria",
+        "- Tool misuse: wrong command, wrong workflow trigger, stale branch, skipped validation",
+        "- Context issue: missing prior decision, conflicting source of truth, outdated PR state",
+        "",
+        "### 5. Correction",
+        "- Prompt/instruction update needed:",
+        "- Memory/state or issue/PR update needed:",
+        "- Tool/workflow/config update needed:",
+        "",
+        "### 6. Verification",
+        "- Which command or workflow must be re-run?",
+        "- What result proves the fix worked?",
+        "- Where is the correction documented for future agents?",
+    ]) + "\n"
+
+
 def render_markdown(signal: RepoSignal) -> str:
     lines = [
         "# Maintainer Signal Report",
@@ -262,6 +308,8 @@ def render_markdown(signal: RepoSignal) -> str:
         "## 5. How to use with Codex",
         "",
         "Paste this report into Codex and ask it to draft issue replies, reproduction checklists, release blockers, or PR review plans. Keep maintainer approval in the loop for any security or high-risk change.",
+        "",
+        render_agent_failure_review_template(signal.repo_path).rstrip(),
     ]
     return "\n".join(lines) + "\n"
 

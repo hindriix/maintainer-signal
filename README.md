@@ -2,10 +2,13 @@
 
 Maintainer Signal is a zero-dependency CLI that generates a practical maintainer health report for an open-source GitHub repository.
 
+It is built for maintainers in the AI-agent era: people who want help from Codex/Claude-style tools for triage, summaries, and review planning, but still need GitHub evidence, human approval, and traceable decisions.
+
 It looks at two signals maintainers usually feel before they can prove:
 
 1. Git activity: recent contributor concentration, hotspot files, and bus-factor pressure.
 2. Open issues: stale/high-risk issues, security/regression language, comment-heavy threads, and suggested next actions.
+3. Agent-assisted maintenance failures: a reusable checklist for comparing task intent against PR diffs, workflow logs, commits, checks, and artifacts.
 
 The output is a Markdown report that can be reviewed by humans or handed to Codex to draft replies, reproduction checklists, PR review plans, release blockers, or weekly maintainer summaries.
 
@@ -58,6 +61,14 @@ JSON output:
 maintainer-signal . --format json -o maintainer-signal.json
 ```
 
+Agent failure review template:
+
+```bash
+maintainer-signal . --format agent-template -o AGENT_FAILURE_REVIEW.md
+```
+
+Use this when an AI agent, workflow, or maintainer automation fails and you need a structured way to review GitHub artifacts before changing prompts, instructions, or tooling. See `docs/agent-failure-review.md` for the full workflow.
+
 ## Example output
 
 ```markdown
@@ -92,7 +103,11 @@ The workflow produces a `MAINTAINER_SIGNAL.md` artifact. You can also commit the
    - a contributor-friendly maintenance plan.
 4. Maintainer reviews every action before posting or merging.
 
-See `CODEX_FOR_OSS.md` for the intended open-source maintenance workflow.
+See `CODEX_FOR_OSS.md` for the intended open-source maintenance workflow and `docs/agent-failure-review.md` for the GitHub-artifact failure review process.
+
+## Roadmap
+
+See `ROADMAP.md` for planned work around GitHub Actions failure parsing, structured failure-review JSON, configurable risk scoring, release-blocker summaries, and packaging.
 
 ## Design principles
 
